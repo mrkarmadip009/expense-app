@@ -11,24 +11,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")       // username for login
-                .password("{noop}admin") // password for login
-                .roles("ADMIN");
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/home", "/expenses").authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")   // Spring will provide default login if no custom page
-                .permitAll()
+                .loginPage("/login")
+                .defaultSuccessUrl("/home", true)
                 .and()
                 .logout()
-                .permitAll();
+                .logoutSuccessUrl("/login");
+
+        http.csrf().disable();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("user")
+                .password("{noop}1234")
+                .roles("USER");
     }
 }

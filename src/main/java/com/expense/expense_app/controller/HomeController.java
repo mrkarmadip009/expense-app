@@ -1,18 +1,18 @@
 package com.expense.expense_app.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class HomeController {
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home() {
-        return "Expense App Backend Running 🚀";
+        return "home";   // home.html
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "API is working ✅";
+    @GetMapping("/expenses")
+    public String expenses() {
+        return "expenses"; // expenses.html
     }
 }
