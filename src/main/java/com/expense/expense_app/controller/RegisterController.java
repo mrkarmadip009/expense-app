@@ -12,17 +12,16 @@ public class RegisterController {
     @Autowired
     private UserService userService;
 
+    // 👉 Open register page
     @GetMapping("/register")
-    public String showRegister() {
-        return "register";
+    public String showRegisterPage() {
+        return "register"; // register.html
     }
 
+    // 👉 Handle form submit
     @PostMapping("/register")
-    public String register(User user) {
-
-        System.out.println("REGISTER HIT: " + user.getEmail()); // ✅ DEBUG
-
+    public String registerUser(@ModelAttribute User user) {
         userService.saveUser(user);
-        return "login";
+        return "redirect:/login";
     }
 }
