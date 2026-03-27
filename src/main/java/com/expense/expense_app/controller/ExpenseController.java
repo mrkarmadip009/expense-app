@@ -4,13 +4,15 @@ import com.expense.expense_app.entity.Expense;
 import com.expense.expense_app.entity.User;
 import com.expense.expense_app.repository.ExpenseRepository;
 import com.expense.expense_app.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -24,34 +26,29 @@ public class ExpenseController {
 
     @GetMapping("/expenses")
     public String showExpenses(Model model) {
-        User user = userRepository.findAll().get(0);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userRepository.findByUsername(username);
 
-        List<Expense> list = expenseRepository.findByUser(user);
-        model.addAttribute("expenses", list);
+        if (user != null) {
+            List<Expense> userExpenses = expenseRepository.findByUser(user);
+            model.addAttribute("expenses", userExpenses);
+        }
 
+        model.addAttribute("newExpense", new Expense());
         return "expenses";
     }
 
-    @PostMapping("/addExpense")
-    public String addExpense(@RequestParam String title,
-                             @RequestParam double amount) {
+    @PostMapping("/add-expense")
+    public String addExpense(@ModelAttribute("newExpense") Expense expense) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User user = userRepository.findByUsername(username);
 
-        User user = userRepository.findAll().get(0);
-
-        Expense expense = new Expense();
-        expense.setTitle(title);
-        expense.setAmount(amount);
-        expense.setDate(LocalDate.now());
-        expense.setUser(user);
-
-        expenseRepository.save(expense);
-
-        return "redirect:/expenses";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteExpense(@PathVariable Long id) {
-        expenseRepository.deleteById(id);
+        if (user != null) {
+            expense.setUser(user);
+            expenseRepository.save(expense);
+        }
         return "redirect:/expenses";
     }
 }
