@@ -1,12 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home</title>
 </head>
 <body>
-<h1>Welcome to Home Page 🎉</h1>
-<a href="/expenses">Go to Expenses</a>
-<br>
-<a href="/logout">Logout</a>
+
+<h2>Add Expense</h2>
+
+<form action="/add-expense" method="post">
+    Title: <input type="text" name="title"><br><br>
+    Amount: <input type="number" name="amount"><br><br>
+    Category: <input type="text" name="category"><br><br>
+    Date: <input type="date" name="date"><br><br>
+    <button type="submit">Add</button>
+</form>
+
+<hr>
+
+<h2>Your Expenses</h2>
+
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Category</th>
+        <th>Date</th>
+    </tr>
+
+    <tr th:each="e : ${expenses}">
+        <td th:text="${e.title}"></td>
+        <td th:text="${e.amount}"></td>
+        <td th:text="${e.category}"></td>
+        <td th:text="${e.date}"></td>
+    </tr>
+
+</table>
+
 </body>
 </html>

@@ -11,8 +11,8 @@ public class HomeController {
         return "home";   // home.html
     }
 
-    @GetMapping("/expenses")
-    public String expenses() {
-        return "expenses"; // expenses.html
-    }
+//    @GetMapping("/expenses")
+//    public String expenses() {
+//        return "expenses"; // expenses.html
+//    }
 }
