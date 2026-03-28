@@ -64,7 +64,7 @@ public class ExpenseController {
             // Agar (Purana Kharcha + Naya Kharcha) > Budget Limit
             if ((currentSpent + expense.getAmount()) > categoryBudget.getAmountLimit()) {
                 // Stop saving and show error
-                model.addAttribute("error", "Error: Is category ka budget cross ho raha hai! Limit: ₹" + categoryBudget.getAmountLimit());
+                model.addAttribute("error", "Error: The budget for this category is being exceeded." + categoryBudget.getAmountLimit());
 
                 // Refresh data for the page
                 model.addAttribute("expenses", expenseRepository.findByUser(user));
