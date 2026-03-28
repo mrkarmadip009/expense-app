@@ -8,18 +8,23 @@
 <div class="container mt-4">
     <h2 class="text-center mb-4">Personal Expense Tracker</h2>
 
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <strong th:text="${error}"></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <div class="row">
         <div class="col-md-5">
-            <div class="card shadow-sm p-3 mb-3">
-                <h5>1. Add New Category</h5>
+            <div class="card shadow-sm p-3 mb-3 border-0">
+                <h5 class="text-secondary">1. Add New Category</h5>
                 <form th:action="@{/addCategory}" method="post" class="d-flex gap-2">
                     <input type="text" name="categoryName" class="form-control" placeholder="e.g. Health" required>
                     <button type="submit" class="btn btn-dark">Add</button>
                 </form>
             </div>
 
-            <div class="card shadow-sm p-3 mb-3">
-                <h5>2. Set Monthly Budget</h5>
+            <div class="card shadow-sm p-3 mb-3 border-0">
+                <h5 class="text-success">2. Set Monthly Budget</h5>
                 <form th:action="@{/saveBudget}" method="post">
                     <input type="number" name="amountLimit" class="form-control mb-2" placeholder="Limit (₹)" required>
                     <select name="categoryId" class="form-select mb-2" required>
@@ -27,12 +32,12 @@
                         <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
                     </select>
                     <input type="month" name="month" class="form-control mb-2" required>
-                    <button type="submit" class="btn btn-success w-100">Save Budget</button>
+                    <button type="submit" class="btn btn-success w-100 shadow-sm">Save Budget</button>
                 </form>
             </div>
 
-            <div class="card shadow-sm p-3 mb-3">
-                <h5>3. Add Expense</h5>
+            <div class="card shadow-sm p-3 mb-3 border-0">
+                <h5 class="text-primary">3. Add Expense</h5>
                 <form th:action="@{/saveExpense}" th:object="${expense}" method="post">
                     <input type="text" th:field="*{title}" class="form-control mb-2" placeholder="What for?" required>
                     <input type="number" step="0.01" th:field="*{amount}" class="form-control mb-2" placeholder="Amount" required>
@@ -41,42 +46,48 @@
                         <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
                     </select>
                     <input type="date" th:field="*{date}" class="form-control mb-2" required>
-                    <button type="submit" class="btn btn-primary w-100">Save Expense</button>
+                    <button type="submit" class="btn btn-primary w-100 shadow-sm">Save Expense</button>
                 </form>
             </div>
         </div>
 
         <div class="col-md-7">
-            <div class="card shadow-sm p-3 mb-3">
+            <div class="card shadow-sm p-3 mb-3 border-0">
                 <h5>Budgets Set</h5>
-                <table class="table table-sm">
-                    <thead><tr><th>Month</th><th>Category</th><th>Limit</th></tr></thead>
-                    <tbody>
-                    <tr th:each="b : ${budgets}">
-                        <td th:text="${b.month}"></td>
-                        <td th:text="${b.category.name}"></td>
-                        <td th:text="'₹' + ${b.amountLimit}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead class="table-light"><tr><th>Month</th><th>Category</th><th>Limit</th></tr></thead>
+                        <tbody>
+                        <tr th:each="b : ${budgets}">
+                            <td th:text="${b.month}"></td>
+                            <td th:text="${b.category.name}"></td>
+                            <td class="fw-bold text-success" th:text="'₹' + ${b.amountLimit}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="card shadow-sm p-3">
+            <div class="card shadow-sm p-3 border-0">
                 <h5>Transaction History</h5>
-                <table class="table table-hover table-sm">
-                    <thead class="table-light"><tr><th>Date</th><th>Title</th><th>Category</th><th>Amount</th></tr></thead>
-                    <tbody>
-                    <tr th:each="exp : ${expenses}">
-                        <td th:text="${exp.date}"></td>
-                        <td th:text="${exp.title}"></td>
-                        <td th:text="${exp.category != null ? exp.category.name : 'N/A'}"></td>
-                        <td th:text="'₹' + ${exp.amount}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm">
+                        <thead class="table-dark"><tr><th>Date</th><th>Title</th><th>Category</th><th>Amount</th></tr></thead>
+                        <tbody>
+                        <tr th:each="exp : ${expenses}">
+                            <td th:text="${exp.date}"></td>
+                            <td th:text="${exp.title}"></td>
+                            <td th:text="${exp.category != null ? exp.category.name : 'N/A'}"></td>
+                            <td class="fw-bold" th:text="'₹' + ${exp.amount}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
