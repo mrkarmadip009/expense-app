@@ -1,16 +1,13 @@
 package com.expense.expense_app.service;
 
-import com.expense.expense_app.service.ExpenseService;
 import com.expense.expense_app.entity.Expense;
 import com.expense.expense_app.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
-
 
 @Service
 public class ExpenseService {
+
     private final ExpenseRepository expenseRepository;
 
     public ExpenseService(ExpenseRepository expenseRepository) {
@@ -22,10 +19,7 @@ public class ExpenseService {
     }
 
     public Expense saveExpense(Expense expense) {
+        // Ab koi budget check nahi, seedha save!
         return expenseRepository.save(expense);
-    }
-
-    public void deleteExpense(Long id) {
-        expenseRepository.deleteById(id);
     }
 }
