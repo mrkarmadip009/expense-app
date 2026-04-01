@@ -1,5 +1,4 @@
 package com.expense.expense_app.controller;
-
 import com.expense.expense_app.entity.User;
 import com.expense.expense_app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +30,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") User user) {
-        // Password ko encrypt karke save karo
+    public String registerUser(@ModelAttribute("user") User user)
+    {
         if (user.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }

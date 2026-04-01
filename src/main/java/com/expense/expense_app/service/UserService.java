@@ -16,7 +16,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // 🔥 important
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         repo.save(user);
     }
 }

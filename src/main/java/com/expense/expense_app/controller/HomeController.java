@@ -1,5 +1,4 @@
 package com.expense.expense_app.controller;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -7,12 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping("/home")
-    public String home() {
-        return "home";   // home.html
+    public String home()
+    {
+        return "home";
     }
-
-//    @GetMapping("/expenses")
-//    public String expenses() {
-//        return "expenses"; // expenses.html
-//    }
 }

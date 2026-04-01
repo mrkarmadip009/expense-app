@@ -1,5 +1,4 @@
 package com.expense.expense_app.config;
-
 import com.expense.expense_app.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,27 +19,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomUserDetailsService userDetailsService;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // 'EnrCoder' ko 'Encoder' karo
+    public PasswordEncoder passwordEncoder()
+    {
+        return NoOpPasswordEncoder.getInstance();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // Ye line fix karegi login issue: Password matching ke liye BCrypt use hoga
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // Postman POST request ke liye zaroori
+                .csrf().disable()
                 .authorizeRequests()
-                // Pehle specify karo kis path ko permit karna hai
                 .antMatchers("/api/**").permitAll()
-                // Phir baaki sab ke liye authentication mango
                 .anyRequest().authenticated()
                 .and()
-                // Basic Auth enable karo taki Postman chal sake
                 .httpBasic();
     }
 }

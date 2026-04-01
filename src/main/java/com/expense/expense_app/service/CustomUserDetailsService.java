@@ -1,5 +1,4 @@
 package com.expense.expense_app.service;
-
 import com.expense.expense_app.entity.User;
 import com.expense.expense_app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        // Database se mila password encrypted hona chahiye
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),

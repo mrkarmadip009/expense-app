@@ -1,33 +1,47 @@
 package com.expense.expense_app.controller;
-
 import com.expense.expense_app.entity.Expense;
 import com.expense.expense_app.repository.ExpenseRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/expenses") // Sabhi URLs /api/expenses se shuru honge
+@RequestMapping("/api/expenses")
 public class ExpenseController {
 
     private final ExpenseRepository expenseRepository;
 
-    // Constructor Injection (Best Practice)
     public ExpenseController(ExpenseRepository expenseRepository) {
         this.expenseRepository = expenseRepository;
     }
 
-    // 1. Saare Expenses dekhne ke liye (GET)
-    // URL: http://localhost:8080/api/expenses
     @GetMapping
     public List<Expense> getAllExpenses() {
         return expenseRepository.findAll();
     }
 
-    // 2. Naya Expense save karne ke liye (POST)
-    // URL: http://localhost:8080/api/expenses/save
     @PostMapping("/save")
     public Expense addExpense(@RequestBody Expense expense) {
-        // @RequestBody Postman se aane wale JSON ko Java object mein badalta hai
         return expenseRepository.save(expense);
+    }
+
+    @PutMapping("/update/{id}")
+    public Expense updateExpense(@PathVariable Long id, @RequestBody Expense expenseDetails) {
+        Expense expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expense not found with id: " + id));
+
+        expense.setTitle(expenseDetails.getTitle());
+        expense.setAmount(expenseDetails.getAmount());
+        expense.setDate(expenseDetails.getDate());
+        expense.setCategory(expenseDetails.getCategory());
+        expense.setUser(expenseDetails.getUser());
+
+        return expenseRepository.save(expense);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteExpense(@PathVariable Long id)
+    {
+        expenseRepository.deleteById(id);
+        return "Expense deleted successfully with id: " + id;
     }
 }

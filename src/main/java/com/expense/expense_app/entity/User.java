@@ -1,6 +1,5 @@
 package com.expense.expense_app.entity;
-
-import javax.persistence.*; // Java 11 ke liye javax zaroori hai
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -12,10 +11,8 @@ public class User {
 
     private String username;
     private String password;
-    private String email; // Ye add karna zaroori tha
+    private String email;
     private String role;
-
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }

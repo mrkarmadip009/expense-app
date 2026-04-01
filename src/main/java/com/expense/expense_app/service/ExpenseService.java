@@ -19,7 +19,6 @@ public class ExpenseService {
     }
 
     public Expense saveExpense(Expense expense) {
-        // Ab koi budget check nahi, seedha save!
         return expenseRepository.save(expense);
     }
 }
